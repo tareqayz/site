@@ -1,0 +1,80 @@
+@use "../../../styles/variables.scss" as *;
+
+// The breathing ensō (homepage sidebar, or embedded in a note).
+.zen-breath {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  & .zen-breath-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+    margin: 0;
+    padding: 1rem 0.5rem 0.9rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 4px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-color: var(--gray);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary);
+      outline-offset: 3px;
+    }
+  }
+
+  & .zen-breath-art {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    font-family: var(--codeFont);
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: pre;
+    color: var(--secondary);
+  }
+
+  & .zen-breath-phase {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  & .zen-breath-count {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--meta);
+  }
+
+  & .zen-breath-help {
+    margin: 0.5rem 0 0;
+    font-size: 0.72rem;
+    color: var(--meta);
+  }
+}
+
+// on phones the right sidebar drops below the page; keep the ensō card from stretching
+@media all and ($mobile) {
+  .sidebar.right > .zen-breath {
+    flex: 0 1 20rem;
+    margin: 0 auto;
+  }
+}
+
+// embedded in a note
+article .zen-breath {
+  margin: 1.5rem auto;
+  max-width: 18rem;
+}

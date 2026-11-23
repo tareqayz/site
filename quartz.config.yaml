@@ -1,0 +1,273 @@
+# yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
+# tareqayz: a daily training log, the unorthodox way.
+# Zen components (mala, breath circle, day stamp...) are wired in quartz.ts.
+configuration:
+  pageTitle: tareqayz
+  pageTitleSuffix: " · tareqayz"
+  enableSPA: true
+  enablePopovers: true
+  analytics: null # switch to { provider: vercel } once Web Analytics is on in Vercel
+  locale: en-US
+  baseUrl: tareqayz.vercel.app
+  publishAssets: referenced
+  ignorePatterns:
+    - private
+    - templates
+    - .obsidian
+  theme:
+    # "local" stops the legacy loader; the built-in `fonts` loader below self-hosts them.
+    fontOrigin: local
+    cdnCaching: false
+    typography:
+      title: Reenie Beanie # handwriting. Also reused as var(--titleFont) for dates & notes
+      header: # an object so the OG-image renderer asks for the one weight this font has
+        name: Instrument Serif
+        weights: [400]
+        includeItalic: true
+      body: Instrument Sans
+      code: JetBrains Mono # ASCII art + mono labels (same as the Unorthodox app)
+    colors:
+      # Stone & fog
+      lightMode:
+        light: "#eef0ec"
+        lightgray: "#d9ddd8"
+        gray: "#8e958f"
+        darkgray: "#3a413e"
+        dark: "#1f2422"
+        secondary: "#4e6a73"
+        tertiary: "#6f8f6c"
+        highlight: rgba(78, 106, 115, 0.1)
+        textHighlight: "#cfdcc688"
+      darkMode:
+        light: "#121514"
+        lightgray: "#262b29"
+        gray: "#6c7570"
+        darkgray: "#cfd6d2"
+        dark: "#e8ede9"
+        secondary: "#93aeb6"
+        tertiary: "#9dbb98"
+        highlight: rgba(147, 174, 182, 0.12)
+        textHighlight: "#4f5f4e88"
+  fonts:
+    fontOrigin: selfHosted # downloaded from Google Fonts at build time, served from /static/fonts
+    title:
+      name: Reenie Beanie
+      weights: [400]
+  links:
+    markdownLinkResolution: shortest
+  contentIndex:
+    enableSiteMap: true
+    enableRSS: true
+    rssLimit: 30
+plugins:
+  - source: "@quartz-community/created-modified-date"
+    enabled: true
+    options:
+      defaultDateType: created # a log's date is the `date:` in its frontmatter
+      priority:
+        - frontmatter
+        - git
+        - filesystem
+    order: 10
+  - source: "@quartz-community/syntax-highlighting"
+    enabled: true
+    options:
+      theme:
+        light: github-light
+        dark: github-dark
+      keepBackground: false
+    order: 20
+  - source: "@quartz-community/obsidian-flavored-markdown"
+    enabled: true
+    options:
+      enableInHtmlEmbed: false
+      enableCheckbox: true
+    order: 40
+  - source: "@quartz-community/github-flavored-markdown"
+    enabled: true
+    order: 30
+  - source: "@quartz-community/table-of-contents"
+    enabled: true
+    order: 50
+    layout:
+      position: right
+      priority: 30
+  - source: "@quartz-community/description"
+    enabled: true
+    order: 70
+  - source: "@quartz-community/latex"
+    enabled: true
+    options:
+      renderEngine: katex
+    order: 80
+  - source: "@quartz-community/citations"
+    enabled: false
+    order: 85
+  - source: "@quartz-community/ox-hugo"
+    enabled: false
+    order: 91
+  - source: "@quartz-community/roam"
+    enabled: false
+    order: 92
+  - source: "@quartz-themes/core"
+    enabled: false
+    options:
+      theme: tokyo-night
+      mode: both
+  - source: "@quartz-community/explicit-publish"
+    enabled: false
+  - source: "@quartz-community/unlisted-pages"
+    enabled: true
+    options: {}
+    order: 45
+  - source: "@quartz-community/encrypted-pages"
+    enabled: false
+  - source: "@quartz-community/stacked-pages"
+    enabled: false
+    layout:
+      position: afterBody
+      priority: 50
+      display: all
+  - source: "@quartz-community/alias-redirects"
+    enabled: true
+  - source: "@quartz-community/favicon"
+    enabled: true
+  - source: "@quartz-community/og-image"
+    enabled: true
+  - source: "@quartz-community/cname"
+    enabled: false # GitHub Pages only; Vercel handles domains
+  - source: "@quartz-community/canvas-page"
+    enabled: true
+  - source: "@quartz-community/content-page"
+    enabled: true
+  - source: "@quartz-community/folder-page"
+    enabled: true
+  - source: "@quartz-community/tag-page"
+    enabled: true
+  - source: "@quartz-community/explorer"
+    enabled: false # replaced by the zen RecentDays + ZenNav (quartz.ts)
+    layout:
+      position: left
+      priority: 50
+  - source: "@quartz-community/graph"
+    enabled: true
+    layout:
+      position: right
+      priority: 40
+  - source: "@quartz-community/search"
+    enabled: true
+    layout:
+      position: left
+      priority: 20
+      group: toolbar
+      groupOptions:
+        grow: true
+  - source: "@quartz-community/backlinks"
+    enabled: true
+    layout:
+      position: right
+      priority: 50
+  - source: "@quartz-community/article-title"
+    enabled: true
+    layout:
+      position: beforeBody
+      priority: 10
+      condition: not-index
+  - source: "@quartz-community/content-meta"
+    enabled: true
+    layout:
+      position: beforeBody
+      priority: 20
+      condition: not-index
+  - source: "@quartz-community/tag-list"
+    enabled: false # the zen DayStamp shows domains as [STR] [MOB] chips
+    layout:
+      position: beforeBody
+      priority: 30
+  - source: "@quartz-community/page-title"
+    enabled: true
+    layout:
+      position: left
+      priority: 10
+  - source: "@quartz-community/darkmode"
+    enabled: true
+    layout:
+      position: left
+      priority: 30
+      group: toolbar
+  - source: "@quartz-community/reader-mode"
+    enabled: false
+    layout:
+      position: left
+      priority: 35
+      group: toolbar
+  - source: "@quartz-community/breadcrumbs"
+    enabled: false
+    layout:
+      position: beforeBody
+      priority: 5
+      condition: not-index
+  - source: "@quartz-community/comments"
+    enabled: false
+    options:
+      provider: giscus
+      options: {}
+    layout:
+      position: afterBody
+      priority: 10
+  - source: "@quartz-community/footer"
+    enabled: false # replaced by the zen footer (quartz.ts)
+    layout:
+      position: footer
+      priority: 50
+  - source: "@quartz-community/recent-notes"
+    enabled: false
+  - source: "@quartz-community/spacer"
+    enabled: true
+    options: {}
+    order: 25
+    layout:
+      position: left
+      priority: 25
+      display: mobile-only
+  - source: "@quartz-community/bases-page"
+    enabled: true
+    options: {}
+    order: 50
+  - source: "@quartz-community/note-properties"
+    enabled: true
+    options:
+      includeAll: false
+      includedProperties: # only source notes carry these
+        - type
+        - author
+        - year
+        - url
+      excludedProperties: []
+      hidePropertiesView: false
+    order: 5
+    layout:
+      position: beforeBody
+      priority: 15
+      display: all
+layout:
+  groups:
+    toolbar:
+      priority: 35
+      direction: row
+      gap: 0.5rem
+  byPageType:
+    "404":
+      positions:
+        beforeBody: []
+        left: []
+        right: []
+    content: {}
+    folder:
+      positions:
+        right: []
+    tag:
+      positions:
+        right: []
+    canvas: {}
+    bases: {}

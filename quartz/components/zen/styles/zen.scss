@@ -1,0 +1,301 @@
+@use "../../../styles/variables.scss" as *;
+
+// Shared bits for the zen components. Tokens (--meta etc.) live in quartz/styles/custom.scss.
+
+.zen-hand {
+  font-family: var(--titleFont);
+  font-weight: 400;
+  color: var(--secondary);
+}
+
+.zen-mono {
+  font-family: var(--codeFont);
+}
+
+.zen-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.zen-sep {
+  color: var(--gray);
+}
+
+// ── day stamp (top of a daily log) ──────────────────────────────────────────
+.zen-daystamp {
+  margin: 0.15rem 0 1.6rem;
+
+  & .zen-daystamp-day {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.15;
+    transform: rotate(-1.2deg);
+    transform-origin: left center;
+  }
+
+  & .zen-daystamp-num {
+    font-size: 2rem;
+  }
+
+  & .zen-daystamp-meta {
+    margin: 0.55rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.75rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    color: var(--meta);
+
+    & a.internal {
+      background: none;
+      padding: 0;
+      font-weight: 500;
+    }
+  }
+
+  & .zen-tag {
+    color: var(--meta);
+  }
+}
+
+// ── prev / next day ─────────────────────────────────────────────────────────
+.zen-daynav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.82rem;
+
+  & a.internal {
+    background: none;
+    padding: 0;
+    font-weight: 500;
+  }
+
+  & .zen-daynav-edge {
+    color: var(--meta);
+  }
+}
+
+// ── sidebar headings (recent days, breathe with me) ─────────────────────────
+.zen-recent h3,
+.zen-breath h3 {
+  margin: 0 0 0.75rem;
+  font-family: var(--codeFont);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--meta);
+}
+
+// ── recent days (left sidebar) ──────────────────────────────────────────────
+.zen-recent {
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  & li {
+    margin: 0;
+  }
+
+  & a.internal {
+    display: flex;
+    flex-direction: column;
+    background: none;
+    padding: 0;
+    line-height: 1.2;
+  }
+
+  & .zen-recent-title {
+    font-family: var(--headerFont);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--dark);
+    transition: color 0.2s ease;
+  }
+
+  & a:hover .zen-recent-title,
+  & a[aria-current] .zen-recent-title {
+    color: var(--secondary);
+  }
+
+  & .zen-recent-date {
+    margin-top: 0.15rem;
+    font-size: 1.1rem;
+  }
+
+  & .zen-recent-empty {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  & .zen-more {
+    display: inline-block;
+    margin-top: 1rem;
+    background: none;
+    padding: 0;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+
+  @media all and ($mobile) {
+    display: none;
+  }
+}
+
+// ── section links (left sidebar) ────────────────────────────────────────────
+.zen-nav {
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  & li {
+    margin: 0;
+  }
+
+  & a.internal {
+    background: none;
+    padding: 0;
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: var(--darkgray);
+    transition: color 0.2s ease;
+
+    & > span {
+      color: var(--tertiary);
+    }
+
+    &:hover,
+    &[aria-current] {
+      color: var(--secondary);
+    }
+  }
+
+  @media all and ($mobile) {
+    flex-basis: 100%;
+
+    & ul {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.25rem 1.1rem;
+      padding: 0.9rem 0 0.4rem;
+    }
+  }
+}
+
+// ── footer: the sleeping cat ────────────────────────────────────────────────
+footer.zen-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 3.5rem 0 4rem;
+  color: var(--meta);
+
+  & .zen-cat {
+    margin: 0 0 0.4rem;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    font-family:
+      "Apple Braille", "Segoe UI Symbol", "Noto Sans Symbols 2", "DejaVu Sans", monospace;
+    font-size: 10px;
+    line-height: 1.05;
+    color: var(--gray);
+  }
+
+  & .zen-cat-zz {
+    position: relative;
+  }
+
+  & .zen-cat-z {
+    position: absolute;
+    left: 25%;
+    bottom: 0.1em;
+    font-family: var(--titleFont);
+    font-size: 1.6em;
+    color: var(--secondary);
+    opacity: 0;
+    animation: zen-cat-z 7.5s ease-in-out infinite;
+  }
+
+  & .zen-cat-z2 {
+    animation-delay: 2.5s;
+  }
+
+  & .zen-cat-z3 {
+    animation-delay: 5s;
+  }
+
+  & .zen-footer-signoff {
+    margin: 0;
+    font-size: 1.55rem;
+  }
+
+  & .zen-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+
+    & li {
+      margin: 0;
+    }
+
+    & a {
+      font-weight: 400;
+    }
+  }
+
+  & .zen-footer-credit {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--meta);
+
+    & a {
+      font-weight: 400;
+    }
+  }
+}
+
+@keyframes zen-cat-z {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7) rotate(-8deg);
+  }
+  15% {
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(1.4em, -2.8em) scale(1.15) rotate(6deg);
+  }
+}

@@ -1,3 +1,346 @@
 @use "./variables.scss" as *;
+// Zen component styles are pulled in here instead of through each component's `.css`: Quartz
+// puts component CSS in the `quartz-base` cascade layer, where it loses to this file and to the
+// built-in font rules (`h3 { font-family }`) no matter how specific it is.
+@use "../components/zen/styles/zen";
+@use "../components/zen/styles/mala";
+@use "../components/zen/styles/breath";
 
-// put your custom CSS here!
+// ─────────────────────────────────────────────────────────────────────────────
+// tareqayz · stone & fog
+// Handwriting = var(--titleFont) (Reenie Beanie), ASCII = var(--codeFont) (JetBrains Mono).
+// ─────────────────────────────────────────────────────────────────────────────
+
+:root {
+  // dates and small print: darker than --gray so it stays readable (≥ 4.5:1 on paper)
+  --meta: #5f6762;
+  // faint stone grain
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.24  0 0 0 0 0.22  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+:root[saved-theme="dark"] {
+  --meta: #9aa39e;
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.9  0 0 0 0 0.88  0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+body {
+  background-image: var(--grain);
+}
+
+// ── type ─────────────────────────────────────────────────────────────────────
+// Instrument Serif has a single weight: never let the browser fake a bold.
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+thead {
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+article {
+  line-height: 1.7;
+
+  & > h1 {
+    font-size: 2.3rem;
+  }
+
+  & h2 {
+    font-size: 1.75rem;
+  }
+
+  & h3 {
+    font-size: 1.35rem;
+  }
+
+  & strong,
+  & p > strong {
+    color: var(--dark);
+    font-weight: 600;
+  }
+}
+
+h1.article-title {
+  font-size: 2.6rem;
+  line-height: 1.1;
+  margin: 0 0 0.35rem;
+}
+
+// the site title is a signature
+.page-title {
+  font-size: 2.6rem;
+  margin: 0;
+  line-height: 1;
+
+  & a {
+    font-family: var(--titleFont);
+    font-weight: 400;
+    color: var(--secondary);
+    display: inline-block;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+    background: none;
+  }
+}
+
+// dates are handwritten
+.content-meta {
+  font-family: var(--titleFont);
+  font-size: 1.3rem;
+  color: var(--meta);
+  margin-top: 0.15rem;
+}
+
+// a daily log has its own day stamp; section pages (log/, sources/ …) don't need a date
+body[data-slug^="log/"] .content-meta,
+body[data-slug$="/index"] .content-meta {
+  display: none;
+}
+
+.zen-hand,
+.hand {
+  font-family: var(--titleFont);
+  font-weight: 400;
+  color: var(--secondary);
+}
+
+article .hand {
+  font-size: 1.35em;
+  line-height: 1.2;
+}
+
+// ── links: slate, with a thin sage underline that firms up on hover ──────────
+article a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--tertiary) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+
+  &:hover {
+    text-decoration-color: var(--tertiary);
+  }
+
+  &.internal {
+    background: none;
+    padding: 0;
+  }
+
+  &.internal.tag-link {
+    text-decoration: none;
+    font-family: var(--codeFont);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+
+  &:has(> img) {
+    text-decoration: none;
+  }
+}
+
+// ── ascii ornaments ───────────────────────────────────────────────────────────
+hr {
+  height: auto;
+  background: none;
+  border: none;
+  margin: 2.5rem auto;
+  text-align: center;
+  overflow: visible;
+
+  &::after {
+    content: "·   ·   ·";
+    font-family: var(--codeFont);
+    font-size: 1rem;
+    color: var(--tertiary);
+    letter-spacing: 0.1em;
+  }
+}
+
+article ul > li::marker {
+  content: "›  ";
+  font-family: var(--codeFont);
+  color: var(--tertiary);
+}
+
+article ol > li::marker {
+  font-family: var(--codeFont);
+  font-size: 0.85em;
+  color: var(--meta);
+}
+
+blockquote {
+  border-left: 1px solid var(--gray);
+  color: var(--darkgray);
+  font-style: italic;
+}
+
+.text-highlight,
+mark {
+  background: linear-gradient(
+    100deg,
+    transparent 0.4%,
+    var(--textHighlight) 2.5%,
+    var(--textHighlight) 96%,
+    transparent 99.5%
+  );
+  color: inherit;
+  padding: 0.05em 0.25em;
+  margin: 0 -0.1em;
+  border-radius: 0.6em 0.25em 0.7em 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+code {
+  font-size: 0.88em;
+}
+
+// ── callouts: > [!hand] and > [!coach] ───────────────────────────────────────
+.callout[data-callout="hand"] {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 1.25rem 0;
+
+  & > .callout-title {
+    display: none;
+  }
+
+  & > .callout-content {
+    font-family: var(--titleFont);
+    font-size: 1.95rem;
+    line-height: 1.2;
+    color: var(--secondary);
+    transform: rotate(-0.8deg);
+    transform-origin: left center;
+
+    & p {
+      color: var(--secondary);
+      margin: 0.3rem 0;
+    }
+  }
+}
+
+.callout[data-callout="coach"] {
+  --color: var(--meta);
+  --border: var(--gray);
+  --bg: transparent;
+  --callout-icon: var(--callout-icon-note);
+  border: 1px dashed var(--gray);
+  border-radius: 3px;
+  padding: 0 1.1rem 0.4rem;
+  transform: rotate(-0.4deg);
+
+  & > .callout-title {
+    padding: 0.75rem 0 0.1rem;
+    --icon-size: 13px;
+
+    & .callout-title-inner {
+      font-family: var(--codeFont);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      line-height: 1.2rem;
+    }
+  }
+
+  & > .callout-content {
+    font-family: var(--titleFont);
+    font-size: 1.45rem;
+    line-height: 1.25;
+
+    & p,
+    & li {
+      color: var(--secondary);
+    }
+  }
+}
+
+// ── layout: calm sidebars ──────────────────────────────────────────────────────
+// the homepage keeps only the breathing ensō on the right
+body[data-slug="index"] .sidebar.right > :not(.zen-breath) {
+  display: none;
+}
+
+.sidebar.left {
+  @media all and ($mobile) {
+    flex-wrap: wrap;
+  }
+}
+
+// note properties (source notes: type / author / year / url) as a small mono card
+.note-properties,
+[data-quartz-plugin="note-properties"] {
+  font-family: var(--codeFont);
+  font-size: 0.78rem;
+}
+
+// ── graph & search, recoloured to stone ────────────────────────────────────────
+.graph > .graph-outer,
+.search > .search-button {
+  border-color: var(--lightgray);
+  border-radius: 4px;
+}
+
+.search > .search-button {
+  background-color: transparent;
+}
+
+.search .search-container .search-space {
+  border-radius: 6px;
+}
+
+// ── motion ───────────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ── folder & tag listings: handwritten dates, mono tags ───────────────────────
+.page-listing {
+  & .section > .meta {
+    font-family: var(--titleFont);
+    font-size: 1.15rem;
+    color: var(--meta);
+  }
+
+  & .desc h3 a.internal {
+    background: none;
+    padding: 0;
+    font-family: var(--headerFont);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--dark);
+
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+
+  & ul.tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    padding-left: 0;
+
+    & a.internal.tag-link {
+      background: none;
+      padding: 0;
+      font-family: var(--codeFont);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+}
