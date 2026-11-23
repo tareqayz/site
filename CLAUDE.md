@@ -27,7 +27,9 @@ A Quartz 5 site (upstream `jackyzha0/quartz` v5.2.2, remote `upstream`) for the 
 ## Publish and preview
 
 - Preview: `npx quartz build --serve` → http://localhost:8080. Restart it after editing `quartz.ts` or anything in `quartz/components/zen/`. Also restart after adding or deleting a log: the dev server only re-renders changed files, so the mala and "recent days" can lag. Production builds always start clean.
-- Publish: `npx quartz sync` (commit + push to `v5`). Vercel builds every push (`vercel.json`).
+- **Publish:** `npx quartz sync` commits and pushes to `v5` on `github.com/tareqayz/site`. The Vercel project is `noktah/tareqayz` → https://tareqayz.vercel.app, with build settings in `vercel.json`.
+  - Vercel doesn't watch the repo yet: the GitHub link needs a GitHub login connection on the Vercel account (Account Settings → Authentication). Until then, also run `vercel deploy --prod --scope noktah`; `.vercelignore` keeps `content/private/` and local files out of the upload.
+  - Once GitHub is connected, run `vercel git connect` once, and every push deploys.
 - Checks: `npm run check` (tsc + prettier) and `npx quartz plugin doctor`.
 
 ## Where things live
