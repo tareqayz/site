@@ -1,0 +1,12 @@
+# What `vercel deploy` from this folder must never upload (git deploys never see these anyway)
+node_modules
+public
+.quartz
+.quartz-cache
+quartz/.quartz-cache
+content/.obsidian
+content/private
+private
+.gstack
+.env*
+.DS_Store
