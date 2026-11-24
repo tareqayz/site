@@ -26,9 +26,13 @@ Every day is tagged with the capacities it trained. They're the same eight axes 
 - **why**: what I was going for, and what I noticed
 - **sources**: where the idea came from. Each source has its own note, so you can see every day it shaped.
 
-## the mala
+## the garden
 
-On the homepage, 108 beads hang in a ring, like a mala. Each bead is one calendar day. When I log a day, its bead fills in. When I miss one, it stays hollow, and I don't go back and fake it. After 108 days the ring starts over.
+At the bottom of the homepage there's a garden with a patch for every day of the year. When I post a day, a plant grows in its patch. The first domain I tag picks what grows: an oak for strength, a sunflower for power, a pine for endurance, reeds for cardio, a willow for flexibility, a fern for mobility, a stack of stones for balance, a dandelion for agility. Each plant is drawn from its own date, so no two are the same.
+
+When I miss a day, its patch stays bare soil, and I don't go back and fake it. There's no streak counter. The point is to keep showing up, not to never miss.
+
+The sand at the top is just for breathing. Move your cursor through it.
 
 > [!hand]
 > not medical advice. just one person's honest log.

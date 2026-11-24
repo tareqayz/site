@@ -19,7 +19,8 @@ export default config
 const base = await loadQuartzLayout()
 
 const zen = {
-  mala: Zen.MalaHero(),
+  sand: Zen.SandGarden(),
+  garden: Zen.YearGarden(),
   breath: Zen.BreathCircle(),
   dayStamp: Zen.DayStamp(),
   dayNav: Zen.DayNav(),
@@ -49,9 +50,10 @@ for (const pageType of Object.keys(base.byPageType)) {
 
 byPageType.content = {
   ...byPageType.content,
-  // MalaHero and BreathCircle render on the homepage only; DayStamp and DayNav on log/* only
-  beforeBody: [zen.mala, ...slot("content", "beforeBody"), zen.dayStamp],
-  afterBody: [...slot("content", "afterBody"), zen.dayNav],
+  // SandGarden, YearGarden and BreathCircle render on the homepage only; DayStamp and DayNav on
+  // log/* only
+  beforeBody: [zen.sand, ...slot("content", "beforeBody"), zen.dayStamp],
+  afterBody: [zen.garden, ...slot("content", "afterBody"), zen.dayNav],
   right: [zen.breath, ...slot("content", "right")],
 }
 

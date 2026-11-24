@@ -3,7 +3,8 @@
 // puts component CSS in the `quartz-base` cascade layer, where it loses to this file and to the
 // built-in font rules (`h3 { font-family }`) no matter how specific it is.
 @use "../components/zen/styles/zen";
-@use "../components/zen/styles/mala";
+@use "../components/zen/styles/sand";
+@use "../components/zen/styles/garden";
 @use "../components/zen/styles/breath";
 
 // ─────────────────────────────────────────────────────────────────────────────

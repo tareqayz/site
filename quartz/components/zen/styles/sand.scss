@@ -1,0 +1,109 @@
+@use "../../../styles/variables.scss" as *;
+
+// The homepage hero: a raked sand garden. Each scene is a character grid (--cols wide) whose font
+// size follows the container (a JetBrains Mono cell is 0.6em wide). Wide containers get the wide
+// scene, narrow ones the narrow scene, each with its stones and clearing placed for its shape.
+.zen-sand {
+  margin: 0 0 2.25rem;
+
+  & .zen-sand-frame {
+    container-type: inline-size;
+    container-name: sand;
+  }
+
+  & .zen-sand-scene {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
+    touch-action: pan-y;
+
+    &.is-narrow {
+      display: none;
+    }
+  }
+
+  & pre {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    font-family: var(--codeFont);
+    font-size: min(16px, calc(100cqi / (var(--cols) * 0.6 + 0.6)));
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: pre;
+    user-select: none;
+  }
+
+  & .zen-sand-lines {
+    color: var(--gray);
+  }
+
+  // the stones sit on top of the sand, cell for cell
+  & .zen-sand-stones {
+    position: absolute;
+    inset: 0;
+    color: var(--darkgray);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  & .zen-moss {
+    color: var(--tertiary);
+  }
+
+  // the day's number, in the clearing
+  & .zen-sand-day {
+    position: absolute;
+    left: var(--cx);
+    top: var(--cy);
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  // Quartz gives p and a `text-wrap: pretty`, which would turn wrapping back on
+  & .zen-sand-num,
+  & .zen-sand-sub {
+    white-space: nowrap;
+  }
+
+  & .zen-sand-num {
+    margin: 0;
+    font-size: clamp(1.7rem, 6.2cqi, 2.8rem);
+    line-height: 0.9;
+    transform: rotate(-2deg);
+  }
+
+  & .zen-sand-sub {
+    pointer-events: auto;
+    padding: 0;
+    background: none;
+    font-size: clamp(0.62rem, 1.75cqi, 0.78rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--meta);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+}
+
+@container sand (max-width: 520px) {
+  .zen-sand .zen-sand-scene.is-wide {
+    display: none;
+  }
+
+  .zen-sand .zen-sand-scene.is-narrow {
+    display: block;
+  }
+}

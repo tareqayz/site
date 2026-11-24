@@ -1,7 +1,7 @@
 ---
 title: "{{date:YYYY-MM-DD}}"
 date: "{{date:YYYY-MM-DD}}"
-tags: [] # strength · power · endurance · cardio · flexibility · mobility · balance · agility (+ any of your own)
+tags: [] # strength · power · endurance · cardio · flexibility · mobility · balance · agility (+ any of your own). The first domain picks the day's plant.
 duration: # minutes
 draft: false
 ---

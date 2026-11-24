@@ -9,11 +9,12 @@ A Quartz 5 site (upstream `jackyzha0/quartz` v5.2.2, remote `upstream`) for the 
   ```yaml
   title: "hips, hangs and a long walk" # or leave the date
   date: "2026-11-24" # required: a note in log/ only counts as a day with a date (frontmatter or filename)
-  tags: [mobility, strength] # the 8 domains below, plus free tags like experiment
+  tags: [mobility, strength] # the 8 domains below, plus free tags like experiment. The first domain picks the day's plant.
   duration: 60 # minutes, optional
   draft: false # true = not published (but still visible in the public repo)
   ```
 - **The 8 domains** (tags → chips): strength `STR`, power `PWR`, endurance `END`, cardio `CAR`, flexibility `FLX`, mobility `MOB`, balance `BAL`, agility `AGI`. They mirror `unorthodox/src/domains/domains.ts`.
+- **The garden** (homepage): every published, dated log grows a hand-drawn plant on its day. The first domain tag _as written_ picks the species: oak (STR), sunflower (PWR), pine (END), reeds (CAR), willow (FLX), fiddlehead fern (MOB), cairn (BAL), dandelion (AGI), wildflower (no domain tag). The date seeds the drawing, so a day's plant never changes between builds.
 - **Sources:** one note per source in `content/sources/` (template: `content/templates/source.md`; frontmatter `type`, `author`, `year`, `url`). Cite them from a day with `[[source-note|label]]`. Each source's backlinks list the days that cited it.
 - **Movements (optional):** `content/movements/<exercise>.md`, linked the same way.
 - **Handwriting:**
@@ -26,7 +27,7 @@ A Quartz 5 site (upstream `jackyzha0/quartz` v5.2.2, remote `upstream`) for the 
 
 ## Publish and preview
 
-- Preview: `npx quartz build --serve` → http://localhost:8080. Restart it after editing `quartz.ts` or anything in `quartz/components/zen/`. Also restart after adding or deleting a log: the dev server only re-renders changed files, so the mala and "recent days" can lag. Production builds always start clean.
+- Preview: `npx quartz build --serve` → http://localhost:8080. Restart it after editing `quartz.ts` or anything in `quartz/components/zen/`. Also restart after adding or deleting a log: the dev server only re-renders changed files, so the garden, the hero's day number and "recent days" can lag. Production builds always start clean.
 - **Publish:** `npx quartz sync` commits and pushes to `v5` on `github.com/tareqayz/site`. The Vercel project is `noktah/tareqayz` → https://tareqayz.vercel.app, with build settings in `vercel.json`.
   - Vercel doesn't watch the repo yet: the GitHub link needs a GitHub login connection on the Vercel account (Account Settings → Authentication). Until then, also run `vercel deploy --prod --scope noktah`; `.vercelignore` keeps `content/private/` and local files out of the upload.
   - Once GitHub is connected, run `vercel git connect` once, and every push deploys.
@@ -37,7 +38,8 @@ A Quartz 5 site (upstream `jackyzha0/quartz` v5.2.2, remote `upstream`) for the 
 - `quartz.config.yaml`: site settings, palette, fonts, plugins.
 - `quartz.ts`: wires the zen components into the layout and adds the `HandCallouts` transformer. Quartz 5.2 only applies layout overrides passed to `loadQuartzLayout(overrides)`, and an override replaces a whole slot. So it starts from the YAML layout (`base`) and falls back to `base.defaults` for slots a page type doesn't set.
 - `quartz/components/zen/`: the zen components.
-  - `MalaHero`: 108 beads, one per calendar day since the first log. Oval on wide screens, round on phones.
+  - `SandGarden`: the hero, a raked sand garden in ASCII (`lib/sand.ts`). Raked lines are contours of a field, and rings circle the stones. The day number sits in a clearing. The pointer smooths a channel that closes again, a tap sends a ripple, and a slow swell drifts across now and then. There's a wide scene and a narrow one for phones.
+  - `YearGarden`: the garden after One Year's (`lib/garden.ts` for the calendar, `lib/plants.ts` for the drawings). It has one cell per day: a plant, bare soil, today's seed, or fading dots ahead. There's no streak counter on purpose.
   - `BreathCircle`: the breathing ensō.
   - `DayStamp`, `DayNav`, `RecentDays`, `ZenNav`, `ZenFooter`: the smaller pieces.
   - Shared logic is in `lib/`, browser scripts in `scripts/*.inline.ts`.
@@ -46,4 +48,4 @@ A Quartz 5 site (upstream `jackyzha0/quartz` v5.2.2, remote `upstream`) for the 
 
 ## Upgrading Quartz
 
-`npx quartz upgrade` merges `upstream/v5`. Upstream files changed here: `quartz.ts`, `quartz/styles/custom.scss`, `quartz/static/icon.png` (the mala icon), and `.github/dependabot.yml` (deleted).
+`npx quartz upgrade` merges `upstream/v5`. Upstream files changed here: `quartz.ts`, `quartz/styles/custom.scss`, `quartz/static/icon.png` (a fiddlehead from the garden), and `.github/dependabot.yml` (deleted).

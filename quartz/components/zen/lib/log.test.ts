@@ -3,12 +3,12 @@ import assert from "node:assert"
 import type { QuartzPluginData } from "../../../plugins/vfile"
 import {
   collectLogs,
-  currentStreak,
   dayNumber,
   fromEpochDay,
   handDate,
   isLogSlug,
   padDay,
+  primaryDomain,
   splitTags,
   toEpochDay,
 } from "./log"
@@ -63,9 +63,15 @@ describe("collectLogs", () => {
       [1, 3, 4],
     )
   })
-  test("streak counts back from the latest log", () => {
-    assert.strictEqual(currentStreak(logs), 2)
-    assert.strictEqual(currentStreak([]), 0)
+})
+
+describe("primaryDomain", () => {
+  test("is the first domain tag as written, not in radar order", () => {
+    assert.strictEqual(primaryDomain(["experiment", "Mobility", "strength"])?.id, "mobility")
+  })
+  test("is undefined when no tag is a domain", () => {
+    assert.strictEqual(primaryDomain(["experiment"]), undefined)
+    assert.strictEqual(primaryDomain([]), undefined)
   })
 })
 

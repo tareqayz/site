@@ -1,0 +1,269 @@
+@use "../../../styles/variables.scss" as *;
+
+// The garden (homepage, after the article): one cell per day, a hand-drawn plant for each day
+// logged. 21 columns on wide screens, 14 (One Year's density) on phones.
+.zen-garden {
+  margin: 3.25rem 0 1rem;
+  container-type: inline-size;
+  container-name: garden;
+
+  & .zen-garden-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+
+  & .zen-garden-title {
+    margin: 0;
+    font-size: 2.2rem;
+    line-height: 1;
+    transform: rotate(-1.5deg);
+    transform-origin: left center;
+  }
+
+  & .zen-garden-year {
+    padding: 0.08rem 0.55rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--meta);
+  }
+
+  // the count, which a hovered day's label replaces
+  & .zen-garden-line {
+    position: relative;
+    margin: 0.65rem 0 1rem;
+    min-height: 1.2em;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--meta);
+
+    & span {
+      transition: opacity 0.25s ease;
+    }
+  }
+
+  & .zen-garden-hint {
+    position: absolute;
+    inset: 0 auto auto 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--secondary);
+    opacity: 0;
+  }
+
+  & .zen-garden-line.is-hinting {
+    & .zen-garden-count {
+      opacity: 0;
+    }
+
+    & .zen-garden-hint {
+      opacity: 1;
+    }
+  }
+
+  & .zen-garden-grid {
+    --cols: 14;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    row-gap: 0.15rem;
+  }
+
+  & .zen-garden-past {
+    margin-top: 1.4rem;
+
+    & summary {
+      cursor: pointer;
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      color: var(--meta);
+    }
+
+    & .zen-garden-grid {
+      margin-top: 0.9rem;
+    }
+  }
+}
+
+@container garden (min-width: 560px) {
+  .zen-garden .zen-garden-grid {
+    --cols: 21;
+  }
+}
+
+// ── one day ─────────────────────────────────────────────────────────────────
+.zen-garden .zen-day {
+  position: relative;
+  display: block;
+  aspect-ratio: 24 / 28;
+  padding: 0;
+  background: none;
+
+  & svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  & path {
+    stroke: var(--tertiary);
+    stroke-width: 1.15;
+  }
+
+  & path.a {
+    stroke: var(--secondary);
+  }
+
+  & path.d {
+    stroke: var(--secondary);
+    stroke-width: 1.7;
+  }
+}
+
+.zen-garden a.zen-day {
+  transition: scale 0.3s ease;
+
+  &:hover {
+    z-index: 1;
+    scale: 1.25;
+  }
+}
+
+// bare soil: a short pen stroke where a plant would be
+.zen-garden .zen-day.is-missed::after,
+.zen-garden .zen-day.is-today::before {
+  content: "";
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  bottom: 4%;
+  height: 10%;
+  background: var(--gray);
+  opacity: 0.6;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 4'><path d='M1 2.7q3-1.7 6-.5t6-.9' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='round'/></svg>")
+    center / 100% 100% no-repeat;
+}
+
+.zen-garden .zen-day.is-missed:nth-child(3n)::after {
+  scale: -1 1;
+}
+
+.zen-garden .zen-day.is-missed:nth-child(4n + 1)::after {
+  translate: 0 -12%;
+}
+
+// today, not yet planted: a seed that breathes (4 s in, 4 s out); a planted today gets one too
+.zen-garden .zen-day.is-today::after,
+.zen-garden .zen-day.is-now::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  width: 0.3rem;
+  height: 0.3rem;
+  margin-left: -0.15rem;
+  border-radius: 50%;
+  background: var(--secondary);
+  animation: zen-seed 8s ease-in-out infinite;
+}
+
+.zen-garden .zen-day.is-now::after {
+  bottom: -6%;
+  width: 0.22rem;
+  height: 0.22rem;
+  margin-left: -0.11rem;
+}
+
+// days ahead: dots, fading out (opacity is set per day)
+.zen-garden .zen-day.is-ahead::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--gray);
+}
+
+.zen-garden .zen-day.is-far {
+  display: none;
+}
+
+// ── motion ──────────────────────────────────────────────────────────────────
+// Each stroke is drawn at pen speed: a dash longer than any stroke slides into place.
+.zen-garden-grid.is-waiting .is-logged path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+
+.zen-garden-grid.is-inking .is-logged path {
+  stroke-dasharray: 400;
+  animation: zen-ink 2.6s cubic-bezier(0.25, 0.6, 0.35, 1) both;
+  animation-delay: calc(var(--i, 0) * var(--step, 40ms));
+}
+
+// flowers and seeds go in after the stem and leaves
+.zen-garden-grid.is-inking .is-logged path:not(.i) {
+  animation-delay: calc(var(--i, 0) * var(--step, 40ms) + 0.45s);
+}
+
+// a slow breeze: each plant sways from its base, a little out of step with its neighbours
+.zen-garden-grid:not(.is-waiting) .is-logged svg {
+  transform-origin: 50% 93%;
+  animation: zen-sway 7s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.37s);
+}
+
+.zen-garden-grid.is-offscreen .is-logged svg,
+.zen-garden-grid.is-offscreen .zen-day::after {
+  animation-play-state: paused;
+}
+
+@keyframes zen-ink {
+  from {
+    stroke-dashoffset: 400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes zen-sway {
+  0%,
+  100% {
+    rotate: -1.6deg;
+  }
+  50% {
+    rotate: 1.6deg;
+  }
+}
+
+@keyframes zen-seed {
+  0%,
+  100% {
+    opacity: 0.65;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zen-garden .zen-day,
+  .zen-garden .zen-day svg,
+  .zen-garden .zen-day path,
+  .zen-garden .zen-day::after {
+    animation: none !important;
+  }
+}
